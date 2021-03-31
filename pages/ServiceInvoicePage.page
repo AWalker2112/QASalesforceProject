@@ -1,0 +1,257 @@
+<apex:page standardController="Course_Invoice__c"  showHeader="true" renderAs="pdf" applyBodyTag="false">
+  
+    <head>
+        <style> 
+            body { font-family: 'Arial Unicode MS'; float:left;}
+            
+            .title{float: right; margin-right: 10%;}
+            .header{margin-top: 10%;margin-left: 5%;}
+            .header2{float:right;margin-right: 10%;font-weight: bold;}
+            .header2text{font: 15px;  }
+            .billing{margin-top: 10%; padding-left: 10%; padding-right: 10%;}
+            .billingText{font: 10px; }
+            .MailTo{float:left;}
+            .billingPar{float:right;}
+            .ServiceInvoice{margin-top: 20%;}
+            .lineItem{margin-top: 2%;margin-bottom: 2%;}
+            .instructorDetail{margin-top: 5%;}
+            .instructorDetailText{}
+            .instructorDetailFooter{margin-top: 3%;font: 15px; width: 100%; font: 15px;}
+            .instructorDetailFooterText{}
+        </style>
+    </head>
+    <body>
+        
+        <div class="title">
+            <h1>Service Invoice</h1>
+        </div>
+
+        <div class="header">
+            <h2>Force Training</h2>
+        </div>
+        <div class="header2">
+        <apex:pageBlock>
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem>
+
+                    <apex:outputLabel value="Invoice Date: " />
+                        <apex:outputPanel>
+                            <div class="header2text">
+                            <apex:outputField value="{!Course_Invoice__c.Invoice_Due_Date__c }" /><br />
+                            </div>
+                        </apex:outputPanel>
+
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+        <apex:pageBlock>
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem>
+                    <apex:outputLabel value="Invoice Number: " />
+                        <apex:outputPanel>
+                            <div class="header2text">
+                            <apex:outputField value="{!Course_Invoice__c.Name }" /><br />
+                            </div>
+                        </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>        
+        </div>
+
+            
+                
+
+      <div class="billing">            
+        <div class= "MailTo">
+          <p>Mail To: </p>
+
+            <div class="billingText">
+              <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Mail_To_Account__r.Name }" /><br />
+              <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Mail_To_Account__r.ShippingStreet }"/><br />
+              <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Mail_To_Account__r.ShippingCity }"/><br />
+              <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Mail_To_Account__r.ShippingState}"/> <br />   
+              <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Mail_To_Account__r.ShippingCountry }"/><br />
+              <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Mail_To_Account__r.ShippingPostalCode}"/><br />
+            </div>
+ 
+        </div>
+        <div class="billingPar">
+            <p>Billing Address: </p>
+
+              <div class="billingText">
+                <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Billing_Account__r.Name }" /><br />
+                <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Billing_Account__r.BillingStreet }"/><br />
+                <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Billing_Account__r.BillingCity }"/><br />
+                <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Billing_Account__r.BillingState}"/> <br />   
+                <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Billing_Account__r.BillingCountry }"/><br />
+                <apex:outputText value="{!Course_Invoice__c.Course_Opportunity__r.Billing_Account__r.BillingPostalCode}"/><br />
+              </div>
+                                    
+        </div>
+      </div>              
+                    
+                    
+                
+            
+      <div class="ServiceInvoice">
+        <apex:pageBlock title="Service Invoice">
+                
+                    <apex:pageBlockTable value="{!Course_Invoice__c}" var="ci"   width="100%" border="1px solid" > 
+                            <apex:column value="{!ci.Invoice_Due_Date__c}" />
+                            <apex:column value="{!ci.Course_Opportunity__r.Name}" />
+                            <apex:column value="{!ci.VAT_Value__c}" />
+                            
+
+                    </apex:pageBlockTable>    
+
+        </apex:pageBlock>
+      </div>
+        
+
+        <div class = "lineItem">
+        <apex:pageBlock >
+            <apex:pageBlockTable value = "{!Course_Invoice__c.Service_Items__r}" var="lineitems" width ="100%"  border="1px solid"> 
+                <apex:column value="{!lineitems.Date__c}"/>
+                
+                <apex:column value="{!lineitems.Hours__c}"/>
+                <apex:column value="{!lineitems.Service_Daily_Amount__c}"/>
+                <apex:column value="{!lineitems.Service_VAT__c}"/>
+                <apex:column value="{!lineitems.Service_Daily_Total__c	}"/>
+                
+            </apex:pageBlockTable>
+  
+        </apex:pageBlock>
+        </div>
+        <apex:pageBlock >
+            
+        
+            <apex:pageBlockTable value="{!Course_Invoice__c}" var="total" width ="100%"  border="1px solid" >			
+
+                    <apex:column value="{!total.Service_Sub_Total__c}"/>
+                    <apex:column value="{!total.Service_Invoice_VAT__c}"/> 
+                    <apex:column value="{!total.Service_Invoice_Total__c}"/>
+                    
+            </apex:pageBlockTable> 
+        </apex:pageBlock>
+
+
+        
+        <div class="instructorDetail">
+            <apex:pageBlock>
+
+                <apex:pageBlockSection columns="1" >
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Please quote in the payment reference: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailText">
+                                <apex:outputField value="{!Course_Invoice__c.Name}" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Consultant Name: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.Name }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Bank Name: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.Bank_Name__c }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Bank Address: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.Bank_Address__c }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Bank Account Number: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.Bank_Account_Number__c }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Bank Sort Code: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.Bank_Sort_Code__c }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                        
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </div>
+
+        
+        <div class="instructorDetailFooter">
+            <apex:pageBlock>
+
+                <apex:pageBlockSection columns="1" >
+                    <apex:pageBlockSectionItem>
+                        
+                            <apex:outputPanel  >
+                                <div class="instructorDetailFooterText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.Full_Address__c }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>   
+
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Phone: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailFooterText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.MobilePhone }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>   
+                
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="Email: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailFooterText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.Email }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>  
+
+                    <apex:pageBlockSectionItem>
+                        <apex:outputLabel value="VAT Number: "/>
+                            <apex:outputPanel  >
+                                <div class="instructorDetailFooterText">
+                                <apex:outputField value="{!Course_Invoice__c.Course_Opportunity__r.Instructor__r.VAT_Number__c }" />
+                                
+                                </div>
+                            </apex:outputPanel>
+                    </apex:pageBlockSectionItem>   
+
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        </div>
+    </body>
+
+</apex:page>

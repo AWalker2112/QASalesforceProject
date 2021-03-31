@@ -1,0 +1,10 @@
+<apex:page standardController="Course_Invoice__c" extensions="InvoiceClone" action="">
+
+    <apex:form>
+
+        <apex:inputHidden value="{!Course_Invoice__c.OwnerId}"/>
+
+    </apex:form>
+
+
+</apex:page>
