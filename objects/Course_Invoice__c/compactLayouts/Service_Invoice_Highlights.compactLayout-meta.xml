@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Invoice_Highlights</fullName>
+    <fields>Name</fields>
+    <fields>Invoice_Due_Date__c</fields>
+    <fields>Status__c</fields>
+    <fields>Service_Sub_Total__c</fields>
+    <fields>Service_Invoice_Total__c</fields>
+    <label>Service Invoice Highlights</label>
+</CompactLayout>

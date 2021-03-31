@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Paid_Status</fullName>
+    <active>true</active>
+    <description>Paid status only allowed if paid date is present</description>
+    <errorConditionFormula>AND( ISPICKVAL( Status__c , &quot;Paid&quot;)  , ISBLANK( Paid_Date__c ) )</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>For status to be &quot;Paid&quot;, Paid Date is required</errorMessage>
+</ValidationRule>
